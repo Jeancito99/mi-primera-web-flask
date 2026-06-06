@@ -3,36 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¡Mi Primera Web con Flask!</title>
+    <title>Detector de Fraudes Bancarios - IA</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f7fafc;
+            margin: 0;
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            min-height: 100vh;
         }
         .tarjeta {
-            background-color: white;
-            padding: 40px;
+            background: white;
+            padding: 35px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            max-width: 450px;
+            width: 100%;
         }
-        h1 { color: #2c3e50; }
-        p { color: #7f8c8d; font-size: 18px; }
-        .cohete { font-size: 50px; }
+        h2 {
+            color: #2d3748;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+        .grupo-campo {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        input[type="number"], select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 15px;
+            background-color: #fff;
+        }
+        button {
+            width: 100%;
+            background-color: #3182ce;
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: #2b6cb0;
+        }
+        .bloque-resultado {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 15px;
+        }
+        /* Estilos dinámicos controlados por Flask */
+        .danger { background-color: #fed7d7; color: #9b2c2c; border: 1px solid #feb2b2; }
+        .success { background-color: #c6f6d5; color: #22543d; border: 1px solid #9ae6b4; }
+        .warning { background-color: #feebc8; color: #744210; border: 1px solid #fbd38d; }
     </style>
 </head>
 <body>
 
     <div class="tarjeta">
-        <div class="cohete">🚀</div>
-        <h1>¡Hola Mundo !</h1>
-        <p>Esta página web está corriendo en un servidor Flask y publicada en Render.</p>
-        <p><strong>Logro desbloqueado: ¡Desplegado con éxito!</strong></p>
+        <h2>🧠 Detector de Fraudes (IA)</h2>
+        
+        <form method="POST">
+            <div class="grupo-campo">
+                <label for="monto">Monto de la transacción ($):</label>
+                <input type="number" step="0.01" name="monto" id="monto" required placeholder="Ejemplo: 850.00">
+            </div>
+            
+            <div class="grupo-campo">
+                <label for="hora">Hora del día (Formato 0-23):</label>
+                <input type="number" min="0" max="23" name="hora" id="hora" required placeholder="Ejemplo: 23">
+            </div>
+            
+            <div class="grupo-campo">
+                <label for="en_linea">¿Es una operación en línea?:</label>
+                <select name="en_linea" id="en_linea" required>
+                    <option value="1">Sí (1)</option>
+                    <option value="0">No (0)</option>
+                </select>
+            </div>
+            
+            <button type="submit">Analizar con Árbol de Decisión</button>
+        </form>
+
+        {% if resultado %}
+            <div class="bloque-resultado {{ clase_alerta }}">
+                {{ resultado }}
+            </div>
+        {% endif %}
     </div>
 
 </body>
